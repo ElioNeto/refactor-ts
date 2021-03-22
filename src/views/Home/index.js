@@ -11,6 +11,7 @@ import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import { CopyButton, UsdButton } from '../../components/Buttons';
 import Footer from '../../components/Footer';
+import { MENU_COPY_01, MENU_COPY_02, MENU_COPY_03, MENU_DELETE, MENU_EDIT, MENU_INCIDENT, MENU_PROBLEM, MENU_SCHEDULE, MENU_USD } from '../../utils/config/home';
 
 export default function Home(){
 
@@ -189,9 +190,9 @@ export default function Home(){
       <Utils/>
       <center className='m-3'>
         <Row>
-          <Col><Button variant="outline-success" onClick={getIncidents}>{S0}</Button></Col>
-          <Col><Button variant="outline-success" onClick={getProblems}>{S1}</Button></Col>
-          <Col><Button variant="outline-success" onClick={getSchedules}>{S2}</Button></Col>
+          { MENU_INCIDENT && <Col><Button variant="outline-success" onClick={getIncidents}>{S0}</Button></Col>}
+          { MENU_PROBLEM && <Col><Button variant="outline-success" onClick={getProblems}>{S1}</Button></Col>}
+          { MENU_SCHEDULE && <Col><Button variant="outline-success" onClick={getSchedules}>{S2}</Button></Col>}
         </Row>
       </center>
       {type &&
@@ -308,19 +309,19 @@ const RowIncident = ({data, type, toDelete}) => {
       <td>{data.contorno}</td>
     }
     <td >
-      <CopyButton txt={data.origem} desc='Referencia'/>
-      <CopyButton txt={data.contorno} desc='Análise'/>
-      <UsdButton id={data.origem}/> 
-      <Button variant='outline-primary'>
+      { MENU_COPY_01 && <CopyButton txt={data.origem} desc='Referencia'/>}
+      { MENU_COPY_02 && <CopyButton txt={data.contorno} desc='Análise'/>}
+      { MENU_USD && <UsdButton id={data.origem}/> }
+      { MENU_EDIT && <Button variant='outline-primary'>
         <IconContext.Provider value={{ size: '25px'}}>
           <FaEdit/>
         </IconContext.Provider>
-      </Button>
-      <Button variant="outline-danger" onClick={toRemove}>
+      </Button>}
+      { MENU_DELETE && <Button variant="outline-danger" onClick={toRemove}>
         <IconContext.Provider value={{ size: '25px'}}>
           <MdDelete/>
         </IconContext.Provider>
-      </Button>
+      </Button>}
     </td>
   </tr>
 )
@@ -331,17 +332,17 @@ const RowSchedule = ({data}) => (
       <td>{data.origem}</td>
       <td>{data.descricao}</td>
       <td >
-        <CopyButton txt={data.origem}/>
-        <Button variant='outline-primary' >
+        { MENU_COPY_03 && <CopyButton txt={data.origem}/>}
+        { MENU_EDIT && <Button variant='outline-primary' >
           <IconContext.Provider value={{ size: '25px'}}>
             <FaEdit/>
           </IconContext.Provider>
-        </Button>
-        <Button variant="outline-danger">
+        </Button>}
+        { MENU_DELETE && <Button variant="outline-danger">
           <IconContext.Provider value={{ size: '25px'}}>
             <MdDelete/>
           </IconContext.Provider>
-        </Button>
+        </Button>}
       </td>
     </tr>
 ) 
