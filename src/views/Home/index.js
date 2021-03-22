@@ -10,6 +10,7 @@ import { IconContext } from 'react-icons';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import { CopyButton, UsdButton } from '../../components/Buttons';
+import Footer from '../../components/Footer';
 
 export default function Home(){
 
@@ -162,7 +163,7 @@ export default function Home(){
   if(isLoading) return <p>Loading</p>
 
   return(
-    <p>
+    <div className='ts-container'>
       <Navbar version={version} />
       <Header pf={IBPF} pj={IBPJ} bo={BO} message={message} status={status}/>
       <Utils/>
@@ -174,24 +175,24 @@ export default function Home(){
         </Row>
       </center>
       {type &&
-        <Table striped bordered hover responsive id='table' className='m-3' >
+        <Table striped bordered hover responsive id='table' style={{maxWidth:'90%', marginLeft: '3%'}} size="sm">
           <tr className='header'>
             {type === S2 ? <TopHeaderTable01/> : <TopHeaderTable02/>}
           </tr>
           {(type === S0 || type === S1) && 
             <tr>
-              <td>
+              <td className='group-field'>
               <input 
-              className='borderInput'
+              className='fullWidth field shadow-0-0-15-4-black-6 rounded-input without-outline without-border text-center'
               type='text'
               //name='filter'
               id='filter-0'
-              placeholder='Buscar por número'
+              placeholder='Número'
               onKeyUp={() => filterColumn(0)}/>
               </td>
               <td>
               <input 
-                className='borderInput'
+                className='fullWidth field shadow-0-0-15-4-black-6 rounded-input without-outline without-border text-center'
                 type='text'
                 //name='filter'
                 id='filter-1'
@@ -200,20 +201,21 @@ export default function Home(){
               </td>
               <td>
               <input 
-                className='borderInput'
+                className='fullWidth field shadow-0-0-15-4-black-6 rounded-input without-outline without-border text-center'
                 type='text'
                 //name='filter'
                 id='filter-2'
                 placeholder='Buscar por análise'
                 onKeyUp={() => filterColumn(2)}/>
               </td>
+              <td></td>
             </tr>
           }
           {type === S2 && 
             <tr>
               <td>
                 <input 
-                  className='borderInput'
+                  className='fullWidth field shadow-0-0-15-4-black-6 rounded-input without-outline without-border text-center'
                   type='text'
                   //name='filter'
                   id='filter-0'
@@ -222,13 +224,14 @@ export default function Home(){
               </td>
               <td>
               <input 
-                className='borderInput'
+                className='fullWidth field shadow-0-0-15-4-black-6 rounded-input without-outline without-border text-center'
                 type='text'
                 //name='filter'
                 id='filter-1'
                 placeholder='Buscar por erro'
                 onKeyUp={() => filterColumn(1)}/>
               </td>
+              <td></td>
             </tr>
           }
           {data.map(item => (
@@ -240,7 +243,8 @@ export default function Home(){
           ))}
         </Table>
       }
-    </p>
+      <Footer/>
+    </div>
   )
 }
 

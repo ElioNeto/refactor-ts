@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import './utils/global/styles.css'
+import './utils/global/styles.scss'
 
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import Home from './views/Home';

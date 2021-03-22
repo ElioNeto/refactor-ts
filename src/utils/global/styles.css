@@ -73,3 +73,55 @@
 .mr-50{
   margin-right: 50px;
 }
+
+.fullWidth {
+  width: 100%;
+}
+
+.text-center {
+  text-align: center !important;
+}
+.flex {
+  display: flex;
+}
+.flex-item-1 {
+  flex: 1;
+}
+
+.greenColor{
+  color: #28a745;
+}
+
+.footer {
+	margin: 0 auto;
+  justify-content: center;
+}
+.footer-item {
+  min-width: 60%;
+}
+
+.field {
+  padding: 10px;
+  margin:10px 0; 
+}
+.border-customized-input {
+  border: 2px solid #eee;
+}
+.without-border {
+  border: none;
+}
+.border-bottom-input {
+  border:0; 
+  border-bottom:1px solid #eee;
+}
+.rounded-input {
+  padding:10px;
+  border-radius:10px;
+}
+.shadow-0-0-15-4-black-6{
+  box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+}
+
+.without-outline {
+  outline: none;
+}
