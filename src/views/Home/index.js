@@ -160,6 +160,26 @@ export default function Home(){
     }
   }
 
+  function remove(data) {
+    let localSolution;
+    if(!data.solution) localSolution = ''
+    else localSolution = data.solution
+
+    console.log(data)
+    console.log(type)
+    console.log(localSolution)
+
+    let collection = 'BackUp'
+    firebase.firestore().collection(collection)
+    .add({
+      origem: data.ref,
+      descricao: data.description,
+      contorno: localSolution
+    })
+
+    firebase.firestore().collection(type).doc(data.id).delete().then(document.location.reload(true)) 
+  }
+
   if(isLoading) return <p>Loading</p>
 
   return(
@@ -236,8 +256,8 @@ export default function Home(){
           }
           {data.map(item => (
             <>
-              {type === S0 && <RowIncident data={item} type={type}/>}
-              {type === S1 && <RowIncident data={item} type={type}/>}
+              {type === S0 && <RowIncident data={item} type={type} toDelete={remove}/>}
+              {type === S1 && <RowIncident data={item} type={type} toDelete={remove}/>}
               {type === S2 && <RowSchedule data={item}/>}
             </>
           ))}
@@ -263,7 +283,19 @@ const TopHeaderTable02 = () => (
     <th>{TH2}</th>  
   </>
 )
-const RowIncident = ({data, type}) => (
+const RowIncident = ({data, type, toDelete}) => {
+  
+  function toRemove(){
+    toDelete({
+      id: data.id,
+      ref: data.origem,
+      description: data.descricao,
+      solution: data.contorno
+    })
+  }
+
+
+  return (
   <tr key={data.id}>
     <td>{data.origem}</td>
     <td>{data.descricao}</td>
@@ -279,12 +311,12 @@ const RowIncident = ({data, type}) => (
       <CopyButton txt={data.origem} desc='Referencia'/>
       <CopyButton txt={data.contorno} desc='Análise'/>
       <UsdButton id={data.origem}/> 
-      <Button variant='outline-primary' >
+      <Button variant='outline-primary'>
         <IconContext.Provider value={{ size: '25px'}}>
           <FaEdit/>
         </IconContext.Provider>
       </Button>
-      <Button variant="outline-danger">
+      <Button variant="outline-danger" onClick={toRemove}>
         <IconContext.Provider value={{ size: '25px'}}>
           <MdDelete/>
         </IconContext.Provider>
@@ -292,6 +324,7 @@ const RowIncident = ({data, type}) => (
     </td>
   </tr>
 )
+}
 
 const RowSchedule = ({data}) => (
     <tr key={data.id}>

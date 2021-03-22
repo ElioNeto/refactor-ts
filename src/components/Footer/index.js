@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Button, Col, Navbar, Row } from 'react-bootstrap';
 import { FaGithubAlt } from 'react-icons/fa';
 
