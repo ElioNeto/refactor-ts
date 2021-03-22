@@ -1,0 +1,9 @@
+﻿export const MENU_COPY_01 = true
+export const MENU_COPY_02 = true
+export const MENU_COPY_03 = true
+export const MENU_USD = true
+export const MENU_EDIT = false
+export const MENU_DELETE = false
+export const MENU_INCIDENT = true
+export const MENU_PROBLEM = true
+export const MENU_SCHEDULE = true
