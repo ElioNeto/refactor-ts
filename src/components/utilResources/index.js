@@ -27,7 +27,6 @@ export default function Utils(){
         <Accordion.Collapse eventKey="0">
           <>
           { CONTAINER_K8S_BPD && <K8sBuscarPorDocumento/>}
-          Nada para ser exibido
           </>
         </Accordion.Collapse>
       </Card>
