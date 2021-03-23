@@ -6,4 +6,7 @@ export const TH4 = 'Análise'
 
 export const S0 = 'Incidentes'
 export const S1 = 'Problemas'
-export const S2 = 'Agendamentos'
+export const S2 = 'Agendador'
+export const S3 = 'Agendamentos'
+
+export const SUCCESS_STORE = 'Gravado com sucesso!'
