@@ -2,7 +2,7 @@
 export const MENU_COPY_02 = true
 export const MENU_COPY_03 = true
 export const MENU_USD = true
-export const MENU_EDIT = false
+export const MENU_EDIT = true
 export const MENU_DELETE = false
 export const MENU_INCIDENT = true
 export const MENU_PROBLEM = true
