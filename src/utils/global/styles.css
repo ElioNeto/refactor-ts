@@ -110,9 +110,17 @@
 .without-border {
   border: none;
 }
-.border-bottom-input {
+.border-bottom-input-eee {
   border:0; 
   border-bottom:1px solid #eee;
+}
+.border-bottom-input-333 {
+  border:0; 
+  border-bottom:1px solid #333;
+}
+.border-bottom-input-555 {
+  border:0; 
+  border-bottom:1px solid #555;
 }
 .rounded-input {
   padding:10px;
@@ -124,4 +132,9 @@
 
 .without-outline {
   outline: none;
+}
+
+.addMarker{
+  color: #3FA110;
+  font-weight: bold;
 }

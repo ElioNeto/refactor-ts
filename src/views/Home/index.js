@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../../components/Navbar';
-
 import firebase from '../../utils/api/firebase'
 import Header from '../../components/Header';
 import Utils from '../../components/utilResources';
-import { S0, S1, S2, TH0, TH1, TH2, TH3, TH4 } from '../../utils/constants';
+import { S0, S1, S2, S3, TH0, TH1, TH2, TH3, TH4 } from '../../utils/constants';
 import { Button, Col, Row, Table } from 'react-bootstrap';
 import { IconContext } from 'react-icons';
 import { FaEdit } from 'react-icons/fa';
@@ -12,15 +11,16 @@ import { MdDelete } from 'react-icons/md';
 import { CopyButton, UsdButton } from '../../components/Buttons';
 import Footer from '../../components/Footer';
 import { MENU_COPY_01, MENU_COPY_02, MENU_COPY_03, MENU_DELETE, MENU_EDIT, MENU_INCIDENT, MENU_PROBLEM, MENU_SCHEDULE, MENU_USD } from '../../utils/config/home';
+import Loading from '../../components/Loading';
+
 
 export default function Home(){
 
   const [data, setData] = useState([])
-  const [version, setVersion] = useState(null)
   const [ip, setIp] = useState(null)
   const [status, setStatus] = useState('Bem vindo ao TheSeeker')
   const [message, setMessage] = useState('Aguarde...')
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [type, setType] = useState(null)
 
   const port = ':7010'
@@ -32,17 +32,6 @@ export default function Home(){
   const IBPF = protocol + ip + port + pj + pf
   const IBPJ = protocol + ip + port + pj
   const BO = protocol + ip + port + bo
-
-  function getVersion() {
-    setIsLoading(true)
-    firebase
-    .database()
-    .ref('versao')
-    .on('value', snapshot => {
-      setVersion(snapshot.val())
-      setIsLoading(false)
-    })
-  }
 
   function getStatus(){
     setIsLoading(true)
@@ -78,10 +67,10 @@ export default function Home(){
   }
 
   useEffect(() => {
-    getVersion()
     getMessage()
     getStatus()
     getIp()
+    //setIsLoading(true)
   })
 
   async function getIncidents() {
@@ -127,7 +116,7 @@ export default function Home(){
   async function getSchedules() {
     let aux = []
     await firebase.firestore()
-      .collection('Agendador')
+      .collection(S2)
       .get()
       .then(querySnapshot => {
         querySnapshot.docs.forEach(document => {
@@ -181,18 +170,23 @@ export default function Home(){
     firebase.firestore().collection(type).doc(data.id).delete().then(document.location.reload(true)) 
   }
 
-  if(isLoading) return <p>Loading</p>
+  function toEdit(data){
+    let url = `/edit${data.id}/${type}`
+    window.location.href = url
+   // return <Redirect to={url}/>
+  }
+
+  if(isLoading) return <Loading/>
 
   return(
     <div className='ts-container'>
-      <Navbar version={version} />
       <Header pf={IBPF} pj={IBPJ} bo={BO} message={message} status={status}/>
       <Utils/>
       <center className='m-3'>
         <Row>
           { MENU_INCIDENT && <Col><Button variant="outline-success" onClick={getIncidents}>{S0}</Button></Col>}
           { MENU_PROBLEM && <Col><Button variant="outline-success" onClick={getProblems}>{S1}</Button></Col>}
-          { MENU_SCHEDULE && <Col><Button variant="outline-success" onClick={getSchedules}>{S2}</Button></Col>}
+          { MENU_SCHEDULE && <Col><Button variant="outline-success" onClick={getSchedules}>{S3}</Button></Col>}
         </Row>
       </center>
       {type &&
@@ -257,9 +251,9 @@ export default function Home(){
           }
           {data.map(item => (
             <>
-              {type === S0 && <RowIncident data={item} type={type} toDelete={remove}/>}
-              {type === S1 && <RowIncident data={item} type={type} toDelete={remove}/>}
-              {type === S2 && <RowSchedule data={item}/>}
+              {type === S0 && <RowIncident data={item} type={type} toDelete={remove} toEdit={toEdit} />}
+              {type === S1 && <RowIncident data={item} type={type} toDelete={remove} toEdit={toEdit} />}
+              {type === S2 && <RowSchedule data={item} toEdit={toEdit}/>}
             </>
           ))}
         </Table>
@@ -284,7 +278,7 @@ const TopHeaderTable02 = () => (
     <th>{TH2}</th>  
   </>
 )
-const RowIncident = ({data, type, toDelete}) => {
+const RowIncident = ({data, type, toDelete, toEdit}) => {
   
   function toRemove(){
     toDelete({
@@ -292,6 +286,12 @@ const RowIncident = ({data, type, toDelete}) => {
       ref: data.origem,
       description: data.descricao,
       solution: data.contorno
+    })
+  }
+
+  function fnc(){
+    toEdit({
+      id: data.id
     })
   }
 
@@ -312,7 +312,7 @@ const RowIncident = ({data, type, toDelete}) => {
       { MENU_COPY_01 && <CopyButton txt={data.origem} desc='Referencia'/>}
       { MENU_COPY_02 && <CopyButton txt={data.contorno} desc='Análise'/>}
       { MENU_USD && <UsdButton id={data.origem}/> }
-      { MENU_EDIT && <Button variant='outline-primary'>
+      { MENU_EDIT && <Button variant='outline-primary' onClick={fnc}>
         <IconContext.Provider value={{ size: '25px'}}>
           <FaEdit/>
         </IconContext.Provider>
@@ -327,13 +327,19 @@ const RowIncident = ({data, type, toDelete}) => {
 )
 }
 
-const RowSchedule = ({data}) => (
+const RowSchedule = ({data, toEdit}) => {
+  function fnc(){
+    toEdit({
+      id: data.id
+    })
+  }
+  return(
     <tr key={data.id}>
       <td>{data.origem}</td>
       <td>{data.descricao}</td>
       <td >
         { MENU_COPY_03 && <CopyButton txt={data.origem}/>}
-        { MENU_EDIT && <Button variant='outline-primary' >
+        { MENU_EDIT && <Button variant='outline-primary' onClick={fnc} >
           <IconContext.Provider value={{ size: '25px'}}>
             <FaEdit/>
           </IconContext.Provider>
@@ -345,4 +351,5 @@ const RowSchedule = ({data}) => (
         </Button>}
       </td>
     </tr>
-) 
+  )
+}

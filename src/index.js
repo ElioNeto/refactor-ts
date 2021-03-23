@@ -4,17 +4,11 @@ import ReactDOM from 'react-dom';
 import './utils/global/styles.css'
 import './utils/global/styles.scss'
 
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import Home from './views/Home';
-
+import Router from "./router";
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Switch>
-        <Route path="/" exact component={Home}/>
-      </Switch>
-    </BrowserRouter>
+    <Router/>
   </React.StrictMode>,
   document.getElementById('root')
 );
